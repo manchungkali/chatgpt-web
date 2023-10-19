@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <style>
+        /* Custom style to center and enlarge the Facebook login button */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Viewport height: makes the container take up all available screen space */
+            margin: 0;
+        }
+        .fb-login-button {
+            /* Adjust the size of the button */
+            font-size: 2em !important; /* Increase font-size */
+            padding: 20px !important; /* Increase padding */
+            /* Add more styling properties if needed */
+        }
+    </style>
+    <!-- other head elements... -->
+</head>
+<body>
+    <div id="fb-root"></div>
+    <!-- Provided Facebook SDK initialization script -->
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0&appId=351423610620818" nonce="6dTW7Sb0"></script>
+
+    <!-- Facebook login button with increased size -->
+    <div class="fb-login-button" 
+      data-width="" 
+      data-size="large" 
+      data-button-type="continue_with" 
+      data-layout="default" 
+      data-auto-logout-link="false" 
+      data-use-continue-as="false" 
+      onlogin="checkLoginState();"></div>
+
+    <script>
+        // This function is called when the user logs in
+        function checkLoginState() {
+            FB.getLoginStatus(function(response) {
+                if (response.status === 'connected') {
+                    // Logged into your app and Facebook. Redirect to the main page.
+                    window.location.replace("index.html");
+                } else {
+                    // The person is not logged into your app or we are unable to tell.
+                    // Handle this situation as you see fit.
+                }
+            });
+        }
+    </script>
+</body>
+</html>

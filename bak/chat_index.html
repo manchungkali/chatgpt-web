@@ -5,15 +5,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="description" content="Ai Chat">
+    <meta name="description" content="简洁而强大的ChatGPT应用">
     <meta name="theme-color" content="#edeff2">
     <meta name="apple-mobile-web-app-status-bar-style" content="#edeff2">
     <meta name="msapplication-TileColor" content="#edeff2">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="msapplication-TileImage" content="icon.png">
-    <link rel="manifest" crossorigin="use-credentials" href="manifest.json">
-    <link rel="icon" type="image/png" href="icon.png">
-    <link rel="apple-touch-icon" href="icon.png" sizes="512x512">
+    <link rel="manifest" crossorigin="use-credentials" href="../manifest.json">
+    <link rel="icon" type="image/png" href="../icon.png">
+    <link rel="apple-touch-icon" href="../icon.png" sizes="512x512">
     <title>ChatGPT</title>
     <style>
         .requestBody,
@@ -2145,6 +2145,28 @@
             setDarkMode();
         }
         checkDark();
+    </script>
+
+    <!-- Facebook JavaScript SDK -->
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '605107408244338', // Replace with your actual app ID
+          cookie     : true,
+          xfbml      : true,
+          version    : 'v11.0' // Use the appropriate version
+        });
+          
+        FB.AppEvents.logPageView();   
+      };
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "https://connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
     </script>
 </head>
 
@@ -6985,30 +7007,45 @@
         }
         loadPrompt();
     </script>
-</body>
 
-</html>
+    <!-- Facebook login or logout button -->
+    <div id="fb-btn-container">
+        <!-- The button will change based on the user's login status -->
+        <fb:login-button 
+          scope="public_profile,email"
+          onlogin="checkLoginState();">
+        </fb:login-button>
+    </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Since the user is redirected here after logging in, we need to check the login status
+        // This function is called when the user logs in or out
+        function checkLoginState() {
             FB.getLoginStatus(function(response) {
-                if (response.status === 'connected') {
-                    // The user is logged in and has authenticated your app. Show the logout button.
-                    var logoutHtml = '<button onclick="logout()">Logout</button>';
-                    document.body.insertAdjacentHTML('beforeend', logoutHtml);
-                } else {
-                    // The user is not logged in to your app or we are unable to tell.
-                    // Redirect back to the login page or handle accordingly.
-                    window.location.replace("login.html");
-                }
+                statusChangeCallback(response);
             });
-        });
+        }
+
+        // Here we handle the response of the login status
+        function statusChangeCallback(response) {
+            if (response.status === 'connected') {
+                // Logged into your app and Facebook.
+                document.getElementById('fb-btn-container').innerHTML = '<button onclick="logout()">Logout</button>';
+                // You can also fetch the user's public profile, for example:
+                // FB.api('/me', function(response) { console.log('Successful login for: ' + response.name); });
+            } else {
+                // The person is not logged into your app or we are unable to tell.
+                document.getElementById('fb-btn-container').innerHTML = '<fb:login-button scope="public_profile,email" onlogin="checkLoginState();"></fb:login-button>';
+            }
+        }
 
         // Function for logging out the user
         function logout() {
             FB.logout(function(response) {
-                // The person is now logged out. Redirect to the login page.
-                window.location.replace("login.html");
+                // Person is now logged out
+                document.getElementById('fb-btn-container').innerHTML = '<fb:login-button scope="public_profile,email" onlogin="checkLoginState();"></fb:login-button>';
             });
         }
     </script>
+</body>
+
+</html>
